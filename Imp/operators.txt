@@ -1,0 +1,13 @@
+NE
+EQ
+GT
+LT
+LE
+GE
+AND
+OR
+=
++=
+-=
+/=
+*=
