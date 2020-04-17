@@ -1,2 +1,2 @@
-/min java -jar Brain/AutoTut.jar
+start /min java -jar Brain/AutoTut.jar
 pause
