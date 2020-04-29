@@ -1,0 +1,1558 @@
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->92
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->96
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->99
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->101
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->104
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->110
+InterestProperty = ""-->113
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->114
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->115
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->117
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->118
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->119
+UpdateType1 = ""-->123
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->125
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->126
+RArrangement = ""-->127
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->128
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->129
+UpdateType1 = "ADD"-->132
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->134
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->92
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->96
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->99
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->101
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->104
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->110
+InterestProperty = ""-->113
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->114
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->115
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->117
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->118
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->119
+UpdateType1 = ""-->123
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->125
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->126
+RArrangement = ""-->127
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->128
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->129
+UpdateType1 = "DELETE"-->132
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->134
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+SrcArrLevel = "PARENT"-->92
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->96
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->97
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->100
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->103
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->109
+SrcArrLevel = "PARENT"-->111
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->112
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->114
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->115
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->116
+UpdateType1 = ""-->120
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->122
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->123
+RArrangement = ""-->124
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->125
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->126
+UpdateType1 = "ADD"-->129
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->131
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+SrcArrLevel = "PARENT"-->92
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->96
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->97
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->100
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->103
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->109
+SrcArrLevel = "PARENT"-->111
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->112
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->114
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->115
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->116
+UpdateType1 = ""-->120
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->122
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->123
+RArrangement = ""-->124
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->125
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->126
+UpdateType1 = "DELETE"-->129
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->131
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->92
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->96
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->99
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->101
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->104
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->110
+InterestProperty = ""-->113
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->114
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->115
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->117
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->118
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->119
+UpdateType1 = ""-->123
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->125
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->126
+RArrangement = ""-->127
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->128
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->129
+UpdateType1 = "ADD"-->132
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->134
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->92
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->96
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->99
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->101
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->104
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->110
+InterestProperty = ""-->113
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->114
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->115
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->117
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->118
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->119
+UpdateType1 = ""-->123
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->125
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->126
+RArrangement = ""-->127
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->128
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->129
+UpdateType1 = "DELETE"-->132
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->134
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+SrcArrLevel = "PARENT"-->92
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->96
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->97
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->100
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->103
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->109
+SrcArrLevel = "PARENT"-->111
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->112
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->114
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->115
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->116
+UpdateType1 = ""-->120
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->122
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->123
+RArrangement = ""-->124
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->125
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->126
+UpdateType1 = "ADD"-->129
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->131
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+PropertyFlag=1-->35
+Property.List=TotCriterionVal<CriCnt>-->36
+PropCount=DCOUNT(Property.List,@FM)-->39
+Final.Property.list<-1>=Property.List<CNT>-->42
+Final.Property.Id<-1>=AF.Framework.getPropertyId()-->43
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->50
+RPricingGrid<2>=Final.Property.Id-->51
+RPricingGrid<3>=Final.Property.list-->52
+ProcessType = "VAL"-->53
+UpdateType = "PRICING.GRID"-->54
+ReferenceId=ArrActivityId-->55
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->56
+OldCriterionVal = ""-->57
+OldCriterionIdData = ""-->58
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->59
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->61
+OldCriterionPos<-1>=CriterionCnt-->62
+level = ""-->64
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->65
+NewCriterionVal = ""-->66
+NewCriterionIdData = ""-->67
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->68
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->70
+NewCriterionPos<-1>=CriterionCnt-->71
+level = ""-->73
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->74
+TEMP = ""-->75
+UpdateArrLink = ""-->76
+UpdateArrLink=1-->78
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->81
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->90
+SrcArrLevel = "PARENT"-->92
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->95
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->96
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->97
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->100
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->103
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->105
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->106
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->107
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->108
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->109
+SrcArrLevel = "PARENT"-->111
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->112
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->114
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->115
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->116
+UpdateType1 = ""-->120
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->122
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->123
+RArrangement = ""-->124
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->125
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->126
+UpdateType1 = "DELETE"-->129
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->131
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "DELETE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->71
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->73
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->75
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->78
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->80
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+InterestProperty = ""-->92
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->93
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->94
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->96
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->97
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->98
+UpdateType1 = ""-->102
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->104
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->105
+RArrangement = ""-->106
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->107
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->108
+UpdateType1 = "ADD"-->111
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->113
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "DELETE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->71
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->73
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->75
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->78
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->80
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+InterestProperty = ""-->92
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->93
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->94
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->96
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->97
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->98
+UpdateType1 = ""-->102
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->104
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->105
+RArrangement = ""-->106
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->107
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->108
+UpdateType1 = "DELETE"-->111
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->113
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "DELETE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+SrcArrLevel = "PARENT"-->71
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->72
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->75
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->76
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->79
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->82
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+SrcArrLevel = "PARENT"-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->91
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->95
+UpdateType1 = ""-->99
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->101
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+RArrangement = ""-->103
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->104
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->105
+UpdateType1 = "ADD"-->108
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->110
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "DELETE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+SrcArrLevel = "PARENT"-->71
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->72
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->75
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->76
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->79
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->82
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+SrcArrLevel = "PARENT"-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->91
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->95
+UpdateType1 = ""-->99
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->101
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+RArrangement = ""-->103
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->104
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->105
+UpdateType1 = "DELETE"-->108
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->110
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "REVERSE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->71
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->73
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->75
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->78
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->80
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+InterestProperty = ""-->92
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->93
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->94
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->96
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->97
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->98
+UpdateType1 = ""-->102
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->104
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->105
+RArrangement = ""-->106
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->107
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->108
+UpdateType1 = "ADD"-->111
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->113
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "REVERSE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->71
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->73
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->75
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->78
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->80
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->83
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->89
+InterestProperty = ""-->92
+AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->93
+UsePricingGridFlag=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->94
+COMPANY.CODE=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->96
+TargetArr=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->97
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->98
+UpdateType1 = ""-->102
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->104
+Arrangement.Id=AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)-->InterestProperty<AA.Interest.Interest.IntUsePricingGrid>-->105
+RArrangement = ""-->106
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->107
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->108
+UpdateType1 = "DELETE"-->111
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->113
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "REVERSE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+SrcArrLevel = "PARENT"-->71
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->72
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->75
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->76
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->79
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->82
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+SrcArrLevel = "PARENT"-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->91
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->95
+UpdateType1 = ""-->99
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->101
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+RArrangement = ""-->103
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->104
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->105
+UpdateType1 = "ADD"-->108
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->110
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "REVERSE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+UpdateArrLink=1-->57
+OldSourcePropertyCnt=DCOUNT(OldSourceProperty<1>,@VM)-->60
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->62
+OldTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->63
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->65
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->66
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->67
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->68
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->69
+SrcArrLevel = "PARENT"-->71
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->72
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->74
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->75
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->76
+NewSourcePropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->79
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->81
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->82
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->84
+SrcProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->85
+SrcArrLevel=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->86
+TargetProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->87
+TargetGridProperty=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->88
+SrcArrLevel = "PARENT"-->90
+ArrId=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->91
+COMPANY.CODE=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->93
+TargetArr=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->94
+AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)-->95
+UpdateType1 = ""-->99
+COMPANY.CODE=EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)-->101
+Arrangement.Id=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->OldSourceProperty<1,AA.PackageName.DataElements.Index>-->102
+RArrangement = ""-->103
+AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->104
+CustomerId=AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)-->RArrangement<AA.Framework.Arrangement.ArrCustomer>-->105
+UpdateType1 = "DELETE"-->108
+AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)-->110
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->37
+RPricingGrid<2>=Final.Property.Id-->38
+RPricingGrid<3>=Final.Property.list-->39
+ProcessType = "VAL"-->40
+UpdateType = "PRICING.GRID"-->41
+ReferenceId=ArrActivityId-->42
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->43
+OldCriterionVal = ""-->44
+OldCriterionIdData = ""-->45
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->46
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->48
+OldCriterionPos<-1>=CriterionCnt-->49
+level = ""-->51
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->52
+NewCriterionVal = ""-->53
+NewCriterionIdData = ""-->54
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->55
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->57
+NewCriterionPos<-1>=CriterionCnt-->58
+level = ""-->60
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->61
+TEMP = ""-->62
+UpdateArrLink = ""-->63
+NewSourcePropertyCnt=DCOUNT(NewSourceProperty<1>,@VM)-->66
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->68
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->70
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->74
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->76
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->78
+UpdateType1 = ""-->83
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+CriterionId=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->32
+DataElementsRec=AA.Framework.DataElements.Read(CriterionId,Error)-->33
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->37
+RPricingGrid<2>=Final.Property.Id-->38
+RPricingGrid<3>=Final.Property.list-->39
+ProcessType = "VAL"-->40
+UpdateType = "PRICING.GRID"-->41
+ReferenceId=ArrActivityId-->42
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->43
+OldCriterionVal = ""-->44
+OldCriterionIdData = ""-->45
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->46
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->48
+OldCriterionPos<-1>=CriterionCnt-->49
+level = ""-->51
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->52
+NewCriterionVal = ""-->53
+NewCriterionIdData = ""-->54
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->55
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->57
+NewCriterionPos<-1>=CriterionCnt-->58
+level = ""-->60
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->61
+TEMP = ""-->62
+UpdateArrLink = ""-->63
+NewSourcePropertyCnt=DCOUNT(NewSourceProperty<1>,@VM)-->66
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->68
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->70
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->74
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->76
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->78
+UpdateType1 = ""-->83
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "DELETE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+NewSourcePropertyCnt=DCOUNT(NewSourceProperty<1>,@VM)-->58
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->60
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->62
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->66
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->68
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->70
+UpdateType1 = ""-->75
+
+------------------------------------------------------------------------
+ActivityStatus=AF.Framework.getC_arractivitystatus()["-",1,1]-->8
+ActivityFullStatus=AF.Framework.getC_arractivitystatus()-->9
+ArrActivityId=AF.Framework.getC_arractivityid()-->10
+Activity=AF.Framework.getC_arractivityrec()-->11
+ActivityAction=AF.Framework.getCurrAction()-->12
+EffectiveDate=AF.Framework.getActivityEffDate()-->13
+PropertyEffDate=AA.Framework.getPropEffDate()-->14
+ArrangementId=AA.Framework.getArrId()-->15
+PropertyId=AF.Framework.getPropertyId()-->16
+MasterArrangementId=AA.Framework.getRArrangementActivity()-->17
+R.PRICING.GRID = ''-->18
+TotCriterionVal = ''-->19
+CriterionPos = ''-->20
+PropertyFlag=0-->21
+level = ""-->22
+CriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->23
+CriterionIdCount=DCOUNT(CriterionIdData,@VM)-->24
+TotCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->26
+CriterionPos<-1>=CriterionCnt-->27
+RPricingGrid<1>=AA.Framework.getPropEffDate()-->31
+ProcessType = "REVERSE"-->32
+UpdateType = "PRICING.GRID"-->33
+ReferenceId=ArrActivityId-->34
+AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)-->35
+OldCriterionVal = ""-->36
+OldCriterionIdData = ""-->37
+OldCriterionIdData=EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)-->38
+OldCriterionVal<-1>=EB.SystemTables.getROld(CriterionCnt)-->40
+OldCriterionPos<-1>=CriterionCnt-->41
+level = ""-->43
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)-->44
+NewCriterionVal = ""-->45
+NewCriterionIdData = ""-->46
+NewCriterionIdData=EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)-->47
+NewCriterionVal<-1>=EB.SystemTables.getRNew(CriterionCnt)-->49
+NewCriterionPos<-1>=CriterionCnt-->50
+level = ""-->52
+AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->53
+TEMP = ""-->54
+UpdateArrLink = ""-->55
+NewSourcePropertyCnt=DCOUNT(NewSourceProperty<1>,@VM)-->58
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->60
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->62
+NewTargetPropertyCnt=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->66
+Property=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->68
+UpdateArrLink=AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)-->NewSourceProperty<1,Index>-->70
+UpdateType1 = ""-->75
+
+------------------------------------------------------------------------

@@ -1,0 +1,190 @@
+['ActivityStatus = "UNAUTH"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->91']
+['SrcArrLevel = "PARENT"-->109']
+['level EQ 1-->124']
+['ProcessType = "VAL"-->131']
+
+------------------------------------------------------------------------
+['ActivityStatus = "UNAUTH"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->91']
+['SrcArrLevel = "PARENT"-->109']
+['level EQ 1-->124']
+['ProcessType = "DELETE"-->131']
+
+------------------------------------------------------------------------
+['ActivityStatus = "UNAUTH"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->92']
+['SrcArrLevel = "PARENT"-->111']
+['level EQ 1-->121']
+['ProcessType = "VAL"-->128']
+
+------------------------------------------------------------------------
+['ActivityStatus = "UNAUTH"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->92']
+['SrcArrLevel = "PARENT"-->111']
+['level EQ 1-->121']
+['ProcessType = "DELETE"-->128']
+
+------------------------------------------------------------------------
+['ActivityFullStatus = "DELETE-REV"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->91']
+['SrcArrLevel = "PARENT"-->109']
+['level EQ 1-->124']
+['ProcessType = "VAL"-->131']
+
+------------------------------------------------------------------------
+['ActivityFullStatus = "DELETE-REV"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->91']
+['SrcArrLevel = "PARENT"-->109']
+['level EQ 1-->124']
+['ProcessType = "DELETE"-->131']
+
+------------------------------------------------------------------------
+['ActivityFullStatus = "DELETE-REV"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->92']
+['SrcArrLevel = "PARENT"-->111']
+['level EQ 1-->121']
+['ProcessType = "VAL"-->128']
+
+------------------------------------------------------------------------
+['ActivityFullStatus = "DELETE-REV"-->30']
+['DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY"-->34']
+['Property.List<CNT> IN Final.Property.list<1>-->41']
+[' NE DCOUNT-->77']
+["UpdateArrLink NE ''-->80"]
+['SrcArrLevel = "PARENT"-->92']
+['SrcArrLevel = "PARENT"-->111']
+['level EQ 1-->121']
+['ProcessType = "DELETE"-->128']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'DELETE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->70']
+['SrcArrLevel = "PARENT"-->88']
+['level EQ 1-->103']
+['ProcessType = "VAL"-->110']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'DELETE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->70']
+['SrcArrLevel = "PARENT"-->88']
+['level EQ 1-->103']
+['ProcessType = "DELETE"-->110']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'DELETE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->71']
+['SrcArrLevel = "PARENT"-->90']
+['level EQ 1-->100']
+['ProcessType = "VAL"-->107']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'DELETE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->71']
+['SrcArrLevel = "PARENT"-->90']
+['level EQ 1-->100']
+['ProcessType = "DELETE"-->107']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'REVERSE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->70']
+['SrcArrLevel = "PARENT"-->88']
+['level EQ 1-->103']
+['ProcessType = "VAL"-->110']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'REVERSE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->70']
+['SrcArrLevel = "PARENT"-->88']
+['level EQ 1-->103']
+['ProcessType = "DELETE"-->110']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'REVERSE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->71']
+['SrcArrLevel = "PARENT"-->90']
+['level EQ 1-->100']
+['ProcessType = "VAL"-->107']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'REVERSE'-->30"]
+[' NE DCOUNT-->56']
+["UpdateArrLink NE ''-->59"]
+['SrcArrLevel = "PARENT"-->71']
+['SrcArrLevel = "PARENT"-->90']
+['level EQ 1-->100']
+['ProcessType = "DELETE"-->107']
+
+------------------------------------------------------------------------
+['ActivityFullStatus = "AUTH-REV"-->30']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'AUTH'-->30"]
+
+------------------------------------------------------------------------
+['ActivityStatus = "UNAUTH"-->30']
+[' EQ DCOUNT-->65']
+['Property IN OldSourceProperty<1,1>-->69']
+['Property IN OldTargetProperty<1,1>-->77']
+
+------------------------------------------------------------------------
+['ActivityFullStatus = "DELETE-REV"-->30']
+[' EQ DCOUNT-->65']
+['Property IN OldSourceProperty<1,1>-->69']
+['Property IN OldTargetProperty<1,1>-->77']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'DELETE'-->30"]
+[' EQ DCOUNT-->57']
+['Property IN OldSourceProperty<1,1>-->61']
+['Property IN OldTargetProperty<1,1>-->69']
+
+------------------------------------------------------------------------
+["ActivityStatus = 'REVERSE'-->30"]
+[' EQ DCOUNT-->57']
+['Property IN OldSourceProperty<1,1>-->61']
+['Property IN OldTargetProperty<1,1>-->69']
+
+------------------------------------------------------------------------

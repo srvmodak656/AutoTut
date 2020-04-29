@@ -1,0 +1,2456 @@
+
+TUT Number : TUT
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = "UNAUTH"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = "UNAUTH"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = "UNAUTH"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = "UNAUTH"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityFullStatus = "DELETE-REV"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityFullStatus = "DELETE-REV"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityFullStatus = "DELETE-REV"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityFullStatus = "DELETE-REV"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
+                    PropertyFlag = 1
+                    Property.List = TotCriterionVal<CriCnt>
+                    CONVERT @VM TO @FM IN Property.List
+                    CONVERT @SM TO @FM IN Property.List
+                    PropCount = DCOUNT(Property.List,@FM)
+                    FOR CNT = 1 TO PropCount
+                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
+                            Final.Property.list<-1> = Property.List<CNT>
+                            Final.Property.Id<-1> = PropertyId
+                        END
+                    NEXT CNT
+                END
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'DELETE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "DELETE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'DELETE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "DELETE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'DELETE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "DELETE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'DELETE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "DELETE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'REVERSE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "REVERSE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'REVERSE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "REVERSE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        IF SrcArrLevel = "PARENT" THEN
+                            ArrId = MasterArrangementId
+                        END
+                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
+                            InterestProperty = ""
+                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
+                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'REVERSE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "REVERSE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "VAL"
+                        UpdateType1 = "ADD"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'REVERSE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "REVERSE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
+                UpdateArrLink = 1
+            END
+            IF UpdateArrLink THEN
+                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
+                FOR Index = 1 TO OldSourcePropertyCnt
+                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
+                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
+                        TargetProperty = OldTargetProperty<1, InnerIndex>
+                        SrcProperty = OldSourceProperty<1,Index>
+                        SrcArrLevel = OldSourceProperty<2,Index>
+                        TargetProperty = OldTargetProperty<1,InnerIndex>
+                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
+                        TargetProperty = NewTargetProperty<1, InnerIndex>
+                        SrcProperty = NewSourceProperty<1,Index>
+                        SrcArrLevel = NewSourceProperty<2,Index>
+                        TargetProperty = NewTargetProperty<1,InnerIndex>
+                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
+                        ELSE
+                            NOT(SrcArrLevel = "PARENT")
+                            ArrId = ArrangementId
+                        END
+                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                        TargetArr = ArrangementId:"/":COMPANY.CODE
+                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
+                    NEXT
+                NEXT
+            END
+            UpdateType1 = ""
+            IF level EQ 1 THEN
+                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
+                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
+                RArrangement = ""
+                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
+                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
+                BEGIN CASE
+                    CASE ProcessType = "DELETE"
+                        UpdateType1 = "DELETE"
+                END CASE
+                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+            END
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityFullStatus = "AUTH-REV"
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'AUTH'
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = "UNAUTH"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            ELSE
+                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT Index
+                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                FOR Index = 1 TO NewTargetPropertyCnt
+                    Property = NewTargetProperty<1, Index>
+                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT
+            END
+            UpdateType1 = ""
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityFullStatus = "DELETE-REV"
+            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
+                CriterionId = CriterionIdData<1,CriCnt>
+                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
+            NEXT CriCnt
+            CONVERT @FM TO "*" IN Final.Property.list
+            CONVERT @FM TO "*" IN Final.Property.Id
+            RPricingGrid<1> = PropertyEffDate
+            RPricingGrid<2> = Final.Property.Id
+            RPricingGrid<3> = Final.Property.list
+            ProcessType = "VAL"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            ELSE
+                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT Index
+                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                FOR Index = 1 TO NewTargetPropertyCnt
+                    Property = NewTargetProperty<1, Index>
+                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT
+            END
+            UpdateType1 = ""
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'DELETE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "DELETE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            ELSE
+                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT Index
+                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                FOR Index = 1 TO NewTargetPropertyCnt
+                    Property = NewTargetProperty<1, Index>
+                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT
+            END
+            UpdateType1 = ""
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
+$PACKAGE AA.PricingGrid
+    SUBROUTINE AA.PRICING.GRID.UPDATE
+    $USING AA.PricingGrid
+    $USING AA.Framework
+    $USING EB.SystemTables
+    $USING AA.Interest
+    $USING AF.Framework
+    $USING ST.CompanyCreation
+    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
+    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
+    ArrActivityId        = AF.Framework.getC_arractivityid()
+    Activity             = AF.Framework.getC_arractivityrec()
+    ActivityAction       = AF.Framework.getCurrAction()
+    EffectiveDate        = AF.Framework.getActivityEffDate()
+    PropertyEffDate      = AA.Framework.getPropEffDate()
+    ArrangementId        = AA.Framework.getArrId()
+    PropertyId           = AF.Framework.getPropertyId()
+    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
+    R.PRICING.GRID = ''
+    TotCriterionVal = ''
+    CriterionPos = ''
+    PropertyFlag = 0
+    level = ""
+    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
+    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
+        CriterionPos<-1> = CriterionCnt
+    NEXT CriterionCnt
+    BEGIN CASE
+        CASE ActivityStatus = 'REVERSE'
+            RPricingGrid<1> = PropertyEffDate
+            ProcessType = "REVERSE"
+            UpdateType = "PRICING.GRID"
+            ReferenceId = ArrActivityId
+            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
+            OldCriterionVal = ""
+            OldCriterionIdData = ""
+            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
+                OldCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
+            NewCriterionVal = ""
+            NewCriterionIdData = ""
+            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
+            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
+                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
+                NewCriterionPos<-1> = CriterionCnt
+            NEXT CriterionCnt
+            level = ""
+            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
+            TEMP = ""
+            UpdateArrLink = ""
+            ELSE
+                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
+                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
+                FOR Index = 1 TO NewSourcePropertyCnt
+                    Property = NewSourceProperty<1, Index>
+                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT Index
+                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
+                FOR Index = 1 TO NewTargetPropertyCnt
+                    Property = NewTargetProperty<1, Index>
+                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
+                        UpdateArrLink = 1
+                        BREAK
+                    END
+                NEXT
+            END
+            UpdateType1 = ""
+    END CASE
+RETURN
+
+------------------------------------------------------------------------
