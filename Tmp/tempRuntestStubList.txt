@@ -1,96 +1,172 @@
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?106
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?119
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.PaymentSchedule.GetSysBillType(BILL.TYPE,SYS.BILL.TYPE,'')?1??"EXPECTED"?114
+AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)?6??'NOT':''?133
+AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)?0??"VAL"?158
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?106
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?119
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.PaymentSchedule.GetSysBillType(BILL.TYPE,SYS.BILL.TYPE,'')?1??"EXPECTED"?114
+AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)?6??'NOT':''?133
+AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)?0??"VAL"?158
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?107
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?116
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)?0??"VAL"?146
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?107
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?116
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)?0??"VAL"?146
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?106
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?119
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"DUE"?117
+AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)?0??"VAL"?144
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?106
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?119
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"DUE"?117
+AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)?0??"VAL"?144
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?107
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?116
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"PAY"?117
+AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)?0??"VAL"?144
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?88
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?107
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?74
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?116
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"PAY"?117
+AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)?0??"VAL"?144
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?85
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?98
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)?0??"VAL"?139
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?85
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?98
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??'NOT':''?21
+AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)?0??'NOT':''?48
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?99
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?70
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?99
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?117
+AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)?0??"VAL"?139
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?86
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?95
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+AA.PaymentSchedule.GetSysBillType(BILL.TYPE,SYS.BILL.TYPE,'')?1??"EXPECTED"?105
+AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)?6??'NOT':''?124
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?86
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?95
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+AA.PaymentSchedule.GetSysBillType(BILL.TYPE,SYS.BILL.TYPE,'')?1??"EXPECTED"?105
+AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)?6??'NOT':''?124
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?85
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?98
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?85
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?98
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?86
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"VAL"?95
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"DUE"?108
 
 ------------------------------------------------------------------------
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?67
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)?7?1,AA.PackageName.DataElements.Index?"PARENT"?86
-AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)?8??1?53
-AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)?8??"DELETE"?95
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"DUE"?108
+
+------------------------------------------------------------------------
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"PAY"?108
+
+------------------------------------------------------------------------
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?5??"PAY"?108
+
+------------------------------------------------------------------------
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+
+------------------------------------------------------------------------
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':''?90
+AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)?4??"CUST"?61
+AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)?2??'NOT':"DUE"?90
+AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)?6??'NOT':''?108
+
+------------------------------------------------------------------------
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??''?21
+
+------------------------------------------------------------------------
+AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")?2??''?21
 
 ------------------------------------------------------------------------

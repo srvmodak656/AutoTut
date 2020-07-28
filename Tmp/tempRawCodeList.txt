@@ -1,534 +1,406 @@
-$PACKAGE AA.PricingGrid
-    SUBROUTINE AA.PRICING.GRID.UPDATE
-    $USING AA.PricingGrid
+$PACKAGE AA.Account
+    SUBROUTINE AA.ACCOUNT.MAKE.DUE
+    $USING AA.PaymentSchedule
     $USING AA.Framework
+    $USING AA.ChargeOff
+    $USING AA.ProductFramework
+    $USING AA.Accounting
+    $USING AC.SoftAccounting
+    $USING EB.ErrorProcessing
     $USING EB.SystemTables
-    $USING AA.Interest
     $USING AF.Framework
-    $USING ST.CompanyCreation
-    ActivityStatus       = AF.Framework.getC_arractivitystatus()["-",1,1]
-    ActivityFullStatus   = AF.Framework.getC_arractivitystatus()
-    ArrActivityId        = AF.Framework.getC_arractivityid()
-    Activity             = AF.Framework.getC_arractivityrec()
-    ActivityAction       = AF.Framework.getCurrAction()
-    EffectiveDate        = AF.Framework.getActivityEffDate()
-    PropertyEffDate      = AA.Framework.getPropEffDate()
-    ArrangementId        = AA.Framework.getArrId()
-    PropertyId           = AF.Framework.getPropertyId()
-    MasterArrangementId  =  AA.Framework.getRArrangementActivity()<AA.Framework.ArrangementActivity.ArrActMasterArrangement>
-    R.PRICING.GRID = ''
-    TotCriterionVal = ''
-    CriterionPos = ''
-    PropertyFlag = 0
-    level = ""
-    CriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
-    CriterionIdCount = DCOUNT(CriterionIdData, @VM)
-    FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-        TotCriterionVal<-1> =  EB.SystemTables.getRNew(CriterionCnt)
-        CriterionPos<-1> = CriterionCnt
-    NEXT CriterionCnt
+    $USING AA.Participant
+    R.ACTIVITY.STATUS = AF.Framework.getC_arractivitystatus()[AA.Framework.Sep,1,1]
+    ARR.ACTIVITY.ID = AF.Framework.getC_arractivityid()
+    R.ACTIVITY = AF.Framework.getC_arractivityrec()
+    ACTIVITY.ACTION = AF.Framework.getCurrAction()
+    EFFECTIVE.DATE = AF.Framework.getActivityEffDate()
+    ARRANGEMENT.ID = AA.Framework.getArrId()
+    CURRENT.ACTIVITY = AF.Framework.getActivityId()<AA.Framework.ActActivity>
+    AAA.ID = AA.Framework.getTxnReference()
+    CHARGEOFF.DATE = ""
+    AA.ChargeOff.GetChargeoffDetails(ARRANGEMENT.ID, "", CHARGEOFF.DATE, "", "")
+    IF CHARGEOFF.DATE THEN
+        PROCESS.TYPES = "BANK":@FM:"CUST"
+    END
+    ELSE
+        NOT(CHARGEOFF.DATE)
+        PROCESS.TYPES = "BANK"
+    END
+    LOOP
+    REMOVE SUB.TYPE FROM PROCESS.TYPES SETTING TYPE.POS
+    WHILE SUB.TYPE
+    REQD.PROCESS = ""
+    RET.ERROR = ""
+    PROCESS.ERROR = ""
+    MULTI.EVENT.REC = ""
+    REVERSAL.MODE = ""
+    PROPERTY = AF.Framework.getPropertyId()
+    PROPERTY.AMOUNT = ''
+    PAYMENT.TYPE.LOC = ""
+    RENEWAL.DATE = ""
+    LAST.PAYMENT.DATE = ""
+    EVENT.DATE = ""
+    CREDIT.BALANCE.TYPE = ""
+    DEBIT.BALANCE.TYPE  = ""
+    ACTIVITY.ID = AF.Framework.getCurrActivity()
+    PRODUCT.LINE = FIELD(ACTIVITY.ID, AA.Framework.Sep, 1)
+    VALID.BILL.TYPES = ''
+    IF CURRENT.ACTIVITY EQ 'MAKEDUE.DISBURSE' THEN
+        VALID.BILL.TYPES = 'DISBURSEMENT'
+    END
+    ELSE
+        NOT(CURRENT.ACTIVITY EQ 'MAKEDUE.DISBURSE')
+        VALID.BILL.TYPES = 'PAYMENT':@VM:'EXPECTED':@VM:'TRANCHE'
+    END
+    PARTICIPANT.FLAG = ""
+    AA.Participant.GetParticipantsCommon(PARTICIPANTS.LIST, PARTICIPANTS.ACCOUNTING.TYPE, PARTICIPANTS.AMOUNTS, PARTICIPANTS.PERCENTAGE, PARTICIPANTS.ENTRY.TYPE, PARTICIPANTS.LIST.ECB, "", "", "", "", "", "", RET.ERROR)
+    IF PARTICIPANTS.LIST THEN
+        PARTICIPANT.FLAG = "1"
+        PART.ENTRY = PARTICIPANTS.ENTRY.TYPE<1,1>
+    END
     BEGIN CASE
-        CASE ActivityStatus = "UNAUTH"
-            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
-                CriterionId = CriterionIdData<1,CriCnt>
-                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
-                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
-                    PropertyFlag = 1
-                    Property.List = TotCriterionVal<CriCnt>
-                    CONVERT @VM TO @FM IN Property.List
-                    CONVERT @SM TO @FM IN Property.List
-                    PropCount = DCOUNT(Property.List,@FM)
-                    FOR CNT = 1 TO PropCount
-                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
-                            Final.Property.list<-1> = Property.List<CNT>
-                            Final.Property.Id<-1> = PropertyId
-                        END
-                    NEXT CNT
+        CASE R.ACTIVITY.STATUS = "UNAUTH"
+            REQD.PROCESS = "VAL"
+            DUE.BALANCE.TYPE = ''
+            LIFECYLE.STATUS = 'DUE'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYLE.STATUS, "", SUB.TYPE, DUE.BALANCE.TYPE)
+            CUR.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'CUR'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, CUR.BALANCE.TYPE)
+            PAY.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'PAY'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, PAY.BALANCE.TYPE)
+            EXP.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'EXP'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, EXP.BALANCE.TYPE)
+            AVL.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'AVL'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)
+            BILL.REFERENCES = ""
+            AA.PaymentSchedule.GetBill(ARRANGEMENT.ID, '', EFFECTIVE.DATE, "", "", "", "", "", "", "", "", "", BILL.REFERENCES, RET.ERROR)
+            IF RET.ERROR THEN
+                PROCESS.ERROR<-1> = RET.ERROR
+                EB.SystemTables.setEtext(RET.ERROR)
+                EB.ErrorProcessing.StoreEndError()
+            END
+            PROPERTY.CLASS = "PAYMENT.SCHEDULE"
+            AA.ProductFramework.GetPropertyRecord("", ARRANGEMENT.ID, "", EFFECTIVE.DATE, PROPERTY.CLASS, "", R.PAYMENT.SCHEDULE, RET.ERROR)
+            LAST.PAYMENT.DATE = AA.Framework.getAccountDetails()<AA.PaymentSchedule.AccountDetails.AdPaymentEndDate>
+            RENEWAL.DATE = AA.Framework.getAccountDetails()<AA.PaymentSchedule.AccountDetails.AdRenewalDate>
+            IF NOT(RENEWAL.DATE) AND EFFECTIVE.DATE EQ LAST.PAYMENT.DATE AND PRODUCT.LINE EQ "LENDING" AND NOT(CURRENT.ACTIVITY MATCHES 'MAKEDUE.DISBURSE':@VM:'TRANCHE.START') THEN
+                THIS.ACTIVITY = "RESIDUAL"
+                THIS.OBJECT = PROPERTY
+                NEW.ACTIVITY.ID = PRODUCT.LINE:AA.Framework.Sep:THIS.ACTIVITY:AA.Framework.Sep:THIS.OBJECT
+                AAA.REC = ""
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActArrangement> = ARRANGEMENT.ID
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActActivity> = NEW.ACTIVITY.ID
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActEffectiveDate> = EFFECTIVE.DATE
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActCurrency> = AA.Framework.getRArrangement()<AA.Framework.Arrangement.ArrCurrency>
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActLinkedActivity> = ARR.ACTIVITY.ID
+                AA.Framework.SecondaryActivityManager("APPEND.TO.LIST",AAA.REC)
+            END
+            LOOP
+            REMOVE BILL.REFERENCE FROM BILL.REFERENCES SETTING BILL.REF.POS
+            WHILE BILL.REFERENCE
+            BILL.DETAILS = ""
+            IF BILL.REFERENCE THEN
+                AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)
+                IF BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdDueReference> AND BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdDueReference> NE AAA.ID THEN
+                    BILL.DETAILS = ""
                 END
-            NEXT CriCnt
-            CONVERT @FM TO "*" IN Final.Property.list
-            CONVERT @FM TO "*" IN Final.Property.Id
-            RPricingGrid<1> = PropertyEffDate
-            RPricingGrid<2> = Final.Property.Id
-            RPricingGrid<3> = Final.Property.list
-            ProcessType = "VAL"
-            UpdateType = "PRICING.GRID"
-            ReferenceId = ArrActivityId
-            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
-            OldCriterionVal = ""
-            OldCriterionIdData = ""
-            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
-                OldCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
-            NewCriterionVal = ""
-            NewCriterionIdData = ""
-            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
-                NewCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
-            TEMP = ""
-            UpdateArrLink = ""
-            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
-                UpdateArrLink = 1
-            END
-            ELSE
-                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
-                    END
-                NEXT Index
-                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                FOR Index = 1 TO NewTargetPropertyCnt
-                    Property = NewTargetProperty<1, Index>
-                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
-                    END
-                NEXT
-            END
-            IF UpdateArrLink THEN
-                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
-                FOR Index = 1 TO OldSourcePropertyCnt
-                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
-                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
-                        TargetProperty = OldTargetProperty<1, InnerIndex>
-                        SrcProperty = OldSourceProperty<1,Index>
-                        SrcArrLevel = OldSourceProperty<2,Index>
-                        TargetProperty = OldTargetProperty<1,InnerIndex>
-                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
-                        TargetProperty = NewTargetProperty<1, InnerIndex>
-                        SrcProperty = NewSourceProperty<1,Index>
-                        SrcArrLevel = NewSourceProperty<2,Index>
-                        TargetProperty = NewTargetProperty<1,InnerIndex>
-                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
-                            InterestProperty = ""
-                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
-                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-            END
-            UpdateType1 = ""
-            IF level EQ 1 THEN
-                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
-                RArrangement = ""
-                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
-                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
-                BEGIN CASE
-                    CASE ProcessType = "VAL"
-                        UpdateType1 = "ADD"
-                    CASE ProcessType = "DELETE"
-                        UpdateType1 = "DELETE"
-                END CASE
-                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
-            END
-        CASE ActivityFullStatus = "DELETE-REV"
-            FOR CriCnt = 1 TO CriterionIdCount UNTIL PropertyFlag
-                CriterionId = CriterionIdData<1,CriCnt>
-                DataElementsRec = AA.Framework.DataElements.Read(CriterionId, Error)
-                IF DataElementsRec<AA.Framework.DataElements.AaDataElementsType> EQ "PROPERTY" THEN
-                    PropertyFlag = 1
-                    Property.List = TotCriterionVal<CriCnt>
-                    CONVERT @VM TO @FM IN Property.List
-                    CONVERT @SM TO @FM IN Property.List
-                    PropCount = DCOUNT(Property.List,@FM)
-                    FOR CNT = 1 TO PropCount
-                        LOCATE Property.List<CNT> IN Final.Property.list<1> SETTING POS ELSE
-                            Final.Property.list<-1> = Property.List<CNT>
-                            Final.Property.Id<-1> = PropertyId
-                        END
-                    NEXT CNT
+                IF SUB.TYPE EQ "CUST" AND BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> NE "DUE" THEN
+                    BILL.DETAILS = ""
                 END
-            NEXT CriCnt
-            CONVERT @FM TO "*" IN Final.Property.list
-            CONVERT @FM TO "*" IN Final.Property.Id
-            RPricingGrid<1> = PropertyEffDate
-            RPricingGrid<2> = Final.Property.Id
-            RPricingGrid<3> = Final.Property.list
-            ProcessType = "VAL"
-            UpdateType = "PRICING.GRID"
-            ReferenceId = ArrActivityId
-            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
-            OldCriterionVal = ""
-            OldCriterionIdData = ""
-            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
-                OldCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
-            NewCriterionVal = ""
-            NewCriterionIdData = ""
-            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
-                NewCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
-            TEMP = ""
-            UpdateArrLink = ""
-            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
-                UpdateArrLink = 1
+            END
+            IF RET.ERROR THEN
+                PROCESS.ERROR<-1> = RET.ERROR
+                EB.SystemTables.setEtext(RET.ERROR)
+                EB.ErrorProcessing.StoreEndError()
+            END
+            SYS.BILL.TYPE = ''
+            BILL.TYPE = BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdBillType,1>
+            AA.PaymentSchedule.GetSysBillType(BILL.TYPE,SYS.BILL.TYPE,'')
+            IF (BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> MATCHES "DUE":@VM:"PAY") AND (SYS.BILL.TYPE MATCHES VALID.BILL.TYPES) THEN
+                PROCESS.TYPE = "DUE"
+                AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)
+                IF RET.ERROR THEN
+                    PROCESS.ERROR<-1> = RET.ERROR
+                    EB.SystemTables.setEtext(RET.ERROR)
+                    EB.ErrorProcessing.StoreEndError()
+                END
+                IF PROPERTY.AMOUNT AND NOT(PROCESS.ERROR) THEN
+                    DR.EVENT.TYPE = ''
+                    CR.EVENT.TYPE = ''
+                    PAY.METHOD = ''
+                    ADDITIONAL.INFO = ''
+                    BEGIN CASE
+                        CASE SYS.BILL.TYPE EQ "EXPECTED"
+                            PAY.METHOD = 'DUE'
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = EXP.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = ""
+                        CASE SYS.BILL.TYPE MATCHES "DISBURSEMENT":@VM:"TRANCHE"
+                            PAY.METHOD = 'PAY'
+                            ADDITIONAL.INFO = 'AVL'
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = AVL.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = ''
+                        CASE BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> EQ "DUE"
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = DUE.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = CUR.BALANCE.TYPE
+                        CASE BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> EQ "PAY"
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = CUR.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = PAY.BALANCE.TYPE
+                        CASE 1
+                    END CASE
+                    EVENT.REC = ""
+                    EVENT.DATE = BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdFinancialDate>
+                    IF DR.EVENT.TYPE THEN
+                        EVENT.REC<AC.SoftAccounting.E_eventType> = DR.EVENT.TYPE
+                        EVENT.REC<AC.SoftAccounting.E_amount> = PROPERTY.AMOUNT
+                        EVENT.REC<AC.SoftAccounting.E_sign> = "DEBIT"
+                        EVENT.REC<AC.SoftAccounting.E_balanceType> = DEBIT.BALANCE.TYPE
+                        EVENT.REC<AC.SoftAccounting.E_valueDate> = EVENT.DATE
+                        EVENT.REC<AC.SoftAccounting.E_reversalInd> = (REVERSAL.MODE = "YES")
+                        IF CREDIT.BALANCE.TYPE THEN
+                            EVENT.REC<AC.SoftAccounting.E_contraTarget> = "BAL*":CREDIT.BALANCE.TYPE
+                        END
+                        MULTI.EVENT.REC<-1> = LOWER(EVENT.REC)
+                        EVENT.REC = ""
+                    END
+                END
+            END
+            REPEAT
+            IF MULTI.EVENT.REC AND NOT(RET.ERROR) THEN
+                IF REQD.PROCESS EQ "VAL" THEN
+                    IF MULTI.EVENT.REC THEN
+                        AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)
+                    END
+                END
+                ELSE
+                    NOT(REQD.PROCESS EQ "VAL")
+                    AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)
+                END
+                IF RET.ERROR THEN
+                    PROCESS.ERROR<-1> = RET.ERROR
+                    EB.SystemTables.setEtext(RET.ERROR)
+                    EB.ErrorProcessing.StoreEndError()
+                END
+            END
+        CASE R.ACTIVITY.STATUS = 'DELETE'
+            REQD.PROCESS = "DEL"
+            IF REQD.PROCESS EQ "VAL" THEN
+                IF MULTI.EVENT.REC THEN
+                    AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)
+                END
             END
             ELSE
-                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
-                    END
-                NEXT Index
-                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                FOR Index = 1 TO NewTargetPropertyCnt
-                    Property = NewTargetProperty<1, Index>
-                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
-                    END
-                NEXT
+                NOT(REQD.PROCESS EQ "VAL")
+                AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)
             END
-            IF UpdateArrLink THEN
-                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
-                FOR Index = 1 TO OldSourcePropertyCnt
-                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
-                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
-                        TargetProperty = OldTargetProperty<1, InnerIndex>
-                        SrcProperty = OldSourceProperty<1,Index>
-                        SrcArrLevel = OldSourceProperty<2,Index>
-                        TargetProperty = OldTargetProperty<1,InnerIndex>
-                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
-                        TargetProperty = NewTargetProperty<1, InnerIndex>
-                        SrcProperty = NewSourceProperty<1,Index>
-                        SrcArrLevel = NewSourceProperty<2,Index>
-                        TargetProperty = NewTargetProperty<1,InnerIndex>
-                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
-                            InterestProperty = ""
-                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
-                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
+            IF RET.ERROR THEN
+                PROCESS.ERROR<-1> = RET.ERROR
+                EB.SystemTables.setEtext(RET.ERROR)
+                EB.ErrorProcessing.StoreEndError()
             END
-            UpdateType1 = ""
-            IF level EQ 1 THEN
-                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
-                RArrangement = ""
-                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
-                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
-                BEGIN CASE
-                    CASE ProcessType = "VAL"
-                        UpdateType1 = "ADD"
-                    CASE ProcessType = "DELETE"
-                        UpdateType1 = "DELETE"
-                END CASE
-                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
-            END
-        CASE ActivityStatus = 'DELETE'
-            RPricingGrid<1> = PropertyEffDate
-            ProcessType = "DELETE"
-            UpdateType = "PRICING.GRID"
-            ReferenceId = ArrActivityId
-            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
-            OldCriterionVal = ""
-            OldCriterionIdData = ""
-            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
-                OldCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
-            NewCriterionVal = ""
-            NewCriterionIdData = ""
-            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
-                NewCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
-            TEMP = ""
-            UpdateArrLink = ""
-            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
-                UpdateArrLink = 1
+        CASE R.ACTIVITY.STATUS = 'AUTH'
+            REQD.PROCESS = "AUT"
+            IF REQD.PROCESS EQ "VAL" THEN
+                IF MULTI.EVENT.REC THEN
+                    AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)
+                END
             END
             ELSE
-                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
+                NOT(REQD.PROCESS EQ "VAL")
+                AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)
+            END
+            IF RET.ERROR THEN
+                PROCESS.ERROR<-1> = RET.ERROR
+                EB.SystemTables.setEtext(RET.ERROR)
+                EB.ErrorProcessing.StoreEndError()
+            END
+        CASE R.ACTIVITY.STATUS = 'REVERSE'
+            REVERSAL.MODE = "YES"
+            REQD.PROCESS = "VAL"
+            DUE.BALANCE.TYPE = ''
+            LIFECYLE.STATUS = 'DUE'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYLE.STATUS, "", SUB.TYPE, DUE.BALANCE.TYPE)
+            CUR.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'CUR'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, CUR.BALANCE.TYPE)
+            PAY.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'PAY'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, PAY.BALANCE.TYPE)
+            EXP.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'EXP'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, EXP.BALANCE.TYPE)
+            AVL.BALANCE.TYPE = ''
+            LIFECYCLE.STATUS = 'AVL'
+            AA.ProductFramework.PropertyGetBalanceName(ARRANGEMENT.ID, PROPERTY, LIFECYCLE.STATUS, "", SUB.TYPE, AVL.BALANCE.TYPE)
+            BILL.REFERENCES = ""
+            AA.PaymentSchedule.GetBill(ARRANGEMENT.ID, '', EFFECTIVE.DATE, "", "", "", "", "", "", "", "", "", BILL.REFERENCES, RET.ERROR)
+            IF RET.ERROR THEN
+                PROCESS.ERROR<-1> = RET.ERROR
+                EB.SystemTables.setEtext(RET.ERROR)
+                EB.ErrorProcessing.StoreEndError()
+            END
+            PROPERTY.CLASS = "PAYMENT.SCHEDULE"
+            AA.ProductFramework.GetPropertyRecord("", ARRANGEMENT.ID, "", EFFECTIVE.DATE, PROPERTY.CLASS, "", R.PAYMENT.SCHEDULE, RET.ERROR)
+            LAST.PAYMENT.DATE = AA.Framework.getAccountDetails()<AA.PaymentSchedule.AccountDetails.AdPaymentEndDate>
+            RENEWAL.DATE = AA.Framework.getAccountDetails()<AA.PaymentSchedule.AccountDetails.AdRenewalDate>
+            IF NOT(RENEWAL.DATE) AND EFFECTIVE.DATE EQ LAST.PAYMENT.DATE AND PRODUCT.LINE EQ "LENDING" AND NOT(CURRENT.ACTIVITY MATCHES 'MAKEDUE.DISBURSE':@VM:'TRANCHE.START') THEN
+                THIS.ACTIVITY = "RESIDUAL"
+                THIS.OBJECT = PROPERTY
+                NEW.ACTIVITY.ID = PRODUCT.LINE:AA.Framework.Sep:THIS.ACTIVITY:AA.Framework.Sep:THIS.OBJECT
+                AAA.REC = ""
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActArrangement> = ARRANGEMENT.ID
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActActivity> = NEW.ACTIVITY.ID
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActEffectiveDate> = EFFECTIVE.DATE
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActCurrency> = AA.Framework.getRArrangement()<AA.Framework.Arrangement.ArrCurrency>
+                AAA.REC<AA.Framework.ArrangementActivity.ArrActLinkedActivity> = ARR.ACTIVITY.ID
+                AA.Framework.SecondaryActivityManager("APPEND.TO.LIST",AAA.REC)
+            END
+            LOOP
+            REMOVE BILL.REFERENCE FROM BILL.REFERENCES SETTING BILL.REF.POS
+            WHILE BILL.REFERENCE
+            BILL.DETAILS = ""
+            IF BILL.REFERENCE THEN
+                AA.PaymentSchedule.GetBillDetails(ARRANGEMENT.ID, BILL.REFERENCE, BILL.DETAILS, RET.ERROR)
+                IF BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdDueReference> AND BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdDueReference> NE AAA.ID THEN
+                    BILL.DETAILS = ""
+                END
+                IF SUB.TYPE EQ "CUST" AND BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> NE "DUE" THEN
+                    BILL.DETAILS = ""
+                END
+            END
+            IF RET.ERROR THEN
+                PROCESS.ERROR<-1> = RET.ERROR
+                EB.SystemTables.setEtext(RET.ERROR)
+                EB.ErrorProcessing.StoreEndError()
+            END
+            SYS.BILL.TYPE = ''
+            BILL.TYPE = BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdBillType,1>
+            AA.PaymentSchedule.GetSysBillType(BILL.TYPE,SYS.BILL.TYPE,'')
+            IF (BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> MATCHES "DUE":@VM:"PAY") AND (SYS.BILL.TYPE MATCHES VALID.BILL.TYPES) THEN
+                PROCESS.TYPE = "DUE"
+                AA.PaymentSchedule.GetBillPropertyAmount(PROCESS.TYPE, SUB.TYPE, PAYMENT.TYPE.LOC, PROPERTY, EFFECTIVE.DATE, BILL.DETAILS, PROPERTY.AMOUNT, "", RET.ERROR)
+                IF RET.ERROR THEN
+                    PROCESS.ERROR<-1> = RET.ERROR
+                    EB.SystemTables.setEtext(RET.ERROR)
+                    EB.ErrorProcessing.StoreEndError()
+                END
+                IF PROPERTY.AMOUNT AND NOT(PROCESS.ERROR) THEN
+                    DR.EVENT.TYPE = ''
+                    CR.EVENT.TYPE = ''
+                    PAY.METHOD = ''
+                    ADDITIONAL.INFO = ''
+                    BEGIN CASE
+                        CASE SYS.BILL.TYPE EQ "EXPECTED"
+                            PAY.METHOD = 'DUE'
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = EXP.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = ""
+                        CASE SYS.BILL.TYPE MATCHES "DISBURSEMENT":@VM:"TRANCHE"
+                            PAY.METHOD = 'PAY'
+                            ADDITIONAL.INFO = 'AVL'
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = AVL.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = ''
+                        CASE BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> EQ "DUE"
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = DUE.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = CUR.BALANCE.TYPE
+                        CASE BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdPaymentMethod,1> EQ "PAY"
+                            EVENT.TYPE = ''
+                            AA.Accounting.GetAccountingEventType("", "", "", ACTIVITY.ACTION, PAY.METHOD, ADDITIONAL.INFO, EVENT.TYPE , PART.ENTRY, RET.ERROR)
+                            DR.EVENT.TYPE = EVENT.TYPE
+                            DEBIT.BALANCE.TYPE = CUR.BALANCE.TYPE
+                            CREDIT.BALANCE.TYPE = PAY.BALANCE.TYPE
+                        CASE 1
+                    END CASE
+                    EVENT.REC = ""
+                    EVENT.DATE = BILL.DETAILS<AA.PaymentSchedule.BillDetails.BdFinancialDate>
+                    IF DR.EVENT.TYPE THEN
+                        EVENT.REC<AC.SoftAccounting.E_eventType> = DR.EVENT.TYPE
+                        EVENT.REC<AC.SoftAccounting.E_amount> = PROPERTY.AMOUNT
+                        EVENT.REC<AC.SoftAccounting.E_sign> = "DEBIT"
+                        EVENT.REC<AC.SoftAccounting.E_balanceType> = DEBIT.BALANCE.TYPE
+                        EVENT.REC<AC.SoftAccounting.E_valueDate> = EVENT.DATE
+                        EVENT.REC<AC.SoftAccounting.E_reversalInd> = (REVERSAL.MODE = "YES")
+                        IF CREDIT.BALANCE.TYPE THEN
+                            EVENT.REC<AC.SoftAccounting.E_contraTarget> = "BAL*":CREDIT.BALANCE.TYPE
+                        END
+                        MULTI.EVENT.REC<-1> = LOWER(EVENT.REC)
+                        EVENT.REC = ""
                     END
-                NEXT Index
-                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                FOR Index = 1 TO NewTargetPropertyCnt
-                    Property = NewTargetProperty<1, Index>
-                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
+                END
+            END
+            REPEAT
+            IF MULTI.EVENT.REC AND NOT(RET.ERROR) THEN
+                IF REQD.PROCESS EQ "VAL" THEN
+                    IF MULTI.EVENT.REC THEN
+                        AA.Accounting.AccountingManager(REQD.PROCESS, PROPERTY, ACTIVITY.ACTION, "", MULTI.EVENT.REC, RET.ERROR)
                     END
-                NEXT
-            END
-            IF UpdateArrLink THEN
-                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
-                FOR Index = 1 TO OldSourcePropertyCnt
-                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
-                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
-                        TargetProperty = OldTargetProperty<1, InnerIndex>
-                        SrcProperty = OldSourceProperty<1,Index>
-                        SrcArrLevel = OldSourceProperty<2,Index>
-                        TargetProperty = OldTargetProperty<1,InnerIndex>
-                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
-                        TargetProperty = NewTargetProperty<1, InnerIndex>
-                        SrcProperty = NewSourceProperty<1,Index>
-                        SrcArrLevel = NewSourceProperty<2,Index>
-                        TargetProperty = NewTargetProperty<1,InnerIndex>
-                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
-                            InterestProperty = ""
-                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
-                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-            END
-            UpdateType1 = ""
-            IF level EQ 1 THEN
-                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
-                RArrangement = ""
-                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
-                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
-                BEGIN CASE
-                    CASE ProcessType = "VAL"
-                        UpdateType1 = "ADD"
-                    CASE ProcessType = "DELETE"
-                        UpdateType1 = "DELETE"
-                END CASE
-                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
-            END
-        CASE ActivityFullStatus = "AUTH-REV"
-        CASE ActivityStatus = 'AUTH'
-        CASE ActivityStatus = 'REVERSE'
-            RPricingGrid<1> = PropertyEffDate
-            ProcessType = "REVERSE"
-            UpdateType = "PRICING.GRID"
-            ReferenceId = ArrActivityId
-            AA.Framework.UpdateReferenceDetails(ArrangementId, ProcessType, UpdateType, ReferenceId, RPricingGrid, ReturnError)
-            OldCriterionVal = ""
-            OldCriterionIdData = ""
-            OldCriterionIdData = EB.SystemTables.getROld(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                OldCriterionVal<-1> = EB.SystemTables.getROld(CriterionCnt)
-                OldCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, OldCriterionIdData, OldCriterionVal, GridPropertyId, OldTargetProperty, OldSourceProperty, level, RetError)
-            NewCriterionVal = ""
-            NewCriterionIdData = ""
-            NewCriterionIdData = EB.SystemTables.getRNew(AA.PricingGrid.PricingGrid.GridCriterionId)
-            FOR CriterionCnt = AA.PricingGrid.PricingGrid.GridCriterion1 TO AA.PricingGrid.PricingGrid.GridCriterion10
-                NewCriterionVal<-1> = EB.SystemTables.getRNew(CriterionCnt)
-                NewCriterionPos<-1> = CriterionCnt
-            NEXT CriterionCnt
-            level = ""
-            AA.PricingGrid.GetSourceAndTargetProperty(ArrangementId, MasterArrangementId, EffectiveDate, NewCriterionIdData, NewCriterionVal, GridPropertyId, NewTargetProperty, NewSourceProperty, level, RetError)
-            TEMP = ""
-            UpdateArrLink = ""
-            IF DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM) THEN
-                UpdateArrLink = 1
-            END
-            ELSE
-                NOT(DCOUNT(OldTargetProperty, @VM) NE DCOUNT(NewTargetProperty, @VM))
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    LOCATE Property IN OldSourceProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
-                    END
-                NEXT Index
-                NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                FOR Index = 1 TO NewTargetPropertyCnt
-                    Property = NewTargetProperty<1, Index>
-                    LOCATE Property IN OldTargetProperty<1,1> SETTING TEMP ELSE
-                        UpdateArrLink = 1
-                        BREAK
-                    END
-                NEXT
-            END
-            IF UpdateArrLink THEN
-                OldSourcePropertyCnt = DCOUNT(OldSourceProperty<1>, @VM)
-                FOR Index = 1 TO OldSourcePropertyCnt
-                    SrcProperty = OldSourceProperty<1, AA.PackageName.DataElements.Index>
-                    OldTargetPropertyCnt = DCOUNT(OldTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO OldTargetPropertyCnt
-                        TargetProperty = OldTargetProperty<1, InnerIndex>
-                        SrcProperty = OldSourceProperty<1,Index>
-                        SrcArrLevel = OldSourceProperty<2,Index>
-                        TargetProperty = OldTargetProperty<1,InnerIndex>
-                        TargetGridProperty = OldTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "REMOVE", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-                NewSourcePropertyCnt = DCOUNT(NewSourceProperty<1>, @VM)
-                FOR Index = 1 TO NewSourcePropertyCnt
-                    Property = NewSourceProperty<1, Index>
-                    NewTargetPropertyCnt = DCOUNT(NewTargetProperty<1>, @VM)
-                    FOR InnerIndex = 1 TO NewTargetPropertyCnt
-                        TargetProperty = NewTargetProperty<1, InnerIndex>
-                        SrcProperty = NewSourceProperty<1,Index>
-                        SrcArrLevel = NewSourceProperty<2,Index>
-                        TargetProperty = NewTargetProperty<1,InnerIndex>
-                        TargetGridProperty = NewTargetProperty<2, InnerIndex>
-                        IF SrcArrLevel = "PARENT" THEN
-                            ArrId = MasterArrangementId
-                        END
-                        ELSE
-                            NOT(SrcArrLevel = "PARENT")
-                            ArrId = ArrangementId
-                        END
-                        IF ProcessType MATCHES "DELETE":@VM:"REVERSE" THEN
-                            InterestProperty = ""
-                            AA.Framework.GetArrangementConditions(ArrangementId, TargetProperty, "", EffectiveDate, "", InterestProperty, RetError)
-                            UsePricingGridFlag = InterestProperty<AA.Interest.Interest.IntUsePricingGrid>
-                        END
-                        COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                        TargetArr = ArrangementId:"/":COMPANY.CODE
-                        AA.PricingGrid.UpdateArrangementGridLink(EffectiveDate, "ADD", ArrId, SrcProperty, TargetArr, TargetProperty, TargetGridProperty, UsePricingGridFlag, ProcessType, RetError)
-                    NEXT
-                NEXT
-            END
-            UpdateType1 = ""
-            IF level EQ 1 THEN
-                COMPANY.CODE = EB.SystemTables.getRCompany(ST.CompanyCreation.Company.EbComMnemonic)
-                Arrangement.Id = ArrangementId:"/":COMPANY.CODE
-                RArrangement = ""
-                AA.Framework.GetArrangement(ArrangementId, RArrangement, RetError)
-                CustomerId = RArrangement<AA.Framework.Arrangement.ArrCustomer>
-                BEGIN CASE
-                    CASE ProcessType = "VAL"
-                        UpdateType1 = "ADD"
-                    CASE ProcessType = "DELETE"
-                        UpdateType1 = "DELETE"
-                END CASE
-                AA.PricingGrid.UpdateCustomerGridLink(CustomerId, UpdateType1, Arrangement.Id, NewTargetProperty, TargetGridProperty, UsePricingGridFlag, RET.ERR)
+                END
+                ELSE
+                    NOT(REQD.PROCESS EQ "VAL")
+                    AA.Accounting.AccountingManager(REQD.PROCESS, "", "", "", "", RET.ERROR)
+                END
+                IF RET.ERROR THEN
+                    PROCESS.ERROR<-1> = RET.ERROR
+                    EB.SystemTables.setEtext(RET.ERROR)
+                    EB.ErrorProcessing.StoreEndError()
+                END
             END
     END CASE
+    IF PARTICIPANT.FLAG THEN
+        AA.Account.AccountMakeDueParticipant()
+    END
+    REPEAT
+    IF RET.ERROR AND NOT(PROCESS.ERROR) THEN
+        PROCESS.ERROR<-1> = RET.ERROR
+        EB.SystemTables.setEtext(RET.ERROR)
+        EB.ErrorProcessing.StoreEndError()
+    END
+    LOG.INFO = ""
+    LOG.INFO<AA.Framework.DebugLogDetails.DlRoutine> = "AA.ACCOUNT.MAKE.DUE"
+    IF REQD.PROCESS = "VAL" THEN
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "BILL.REFERENCE.PICKED"
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = BILL.REFERENCE
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "ACCOUNTING.AMOUNT"
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = PROPERTY.AMOUNT
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "EVENT.DATE"
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = EVENT.DATE
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "CREDIT.BALANCE"
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = CREDIT.BALANCE.TYPE
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "DEBIT.BALANCE"
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = DEBIT.BALANCE.TYPE
+    END
+    LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "ACCOUNTING.PROCESS.TYPE"
+    LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = REQD.PROCESS
+    CONVERT @FM TO "&FM&" IN PROCESS.ERROR
+    IF PROCESS.ERROR THEN
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyName,-1> = "ERROR DETECTED"
+        LOG.INFO<AA.Framework.DebugLogDetails.DlKeyValue,-1> = PROCESS.ERROR
+    END
+    AA.Framework.LogManager("UPDATE", "DEBUG", LOG.INFO, "")
 RETURN
 
 ------------------------------------------------------------------------
