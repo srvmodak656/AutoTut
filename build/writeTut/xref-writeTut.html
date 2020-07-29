@@ -15,7 +15,7 @@
 
 <div class="node">
   <a name="pyi_rth__tkinter.py"></a>
-  <a target="code" href="///C:/Users/anura/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/PyInstaller/loader/rthooks/pyi_rth__tkinter.py" type="text/plain"><tt>pyi_rth__tkinter.py</tt></a>
+  <a target="code" href="///C:/Users/anura/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/PyInstaller/hooks/rthooks/pyi_rth__tkinter.py" type="text/plain"><tt>pyi_rth__tkinter.py</tt></a>
 <span class="moduletype">Script</span>  <div class="import">
 imports:
     <a href="#os">os</a>
@@ -32,11 +32,10 @@ imported by:
 
 <div class="node">
   <a name="pyi_rth_multiprocessing.py"></a>
-  <a target="code" href="///C:/Users/anura/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/PyInstaller/loader/rthooks/pyi_rth_multiprocessing.py" type="text/plain"><tt>pyi_rth_multiprocessing.py</tt></a>
+  <a target="code" href="///C:/Users/anura/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/PyInstaller/hooks/rthooks/pyi_rth_multiprocessing.py" type="text/plain"><tt>pyi_rth_multiprocessing.py</tt></a>
 <span class="moduletype">Script</span>  <div class="import">
 imports:
-    <a href="#'multiprocessing.forking'">'multiprocessing.forking'</a>
- &#8226;   <a href="#multiprocessing">multiprocessing</a>
+    <a href="#multiprocessing">multiprocessing</a>
  &#8226;   <a href="#multiprocessing.popen_fork">multiprocessing.popen_fork</a>
  &#8226;   <a href="#multiprocessing.popen_spawn_win32">multiprocessing.popen_spawn_win32</a>
  &#8226;   <a href="#multiprocessing.spawn">multiprocessing.spawn</a>
@@ -56,7 +55,7 @@ imported by:
 
 <div class="node">
   <a name="pyi_rth_pkgres.py"></a>
-  <a target="code" href="///C:/Users/anura/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/PyInstaller/loader/rthooks/pyi_rth_pkgres.py" type="text/plain"><tt>pyi_rth_pkgres.py</tt></a>
+  <a target="code" href="///C:/Users/anura/AppData/Local/Programs/Python/Python38-32/Lib/site-packages/PyInstaller/hooks/rthooks/pyi_rth_pkgres.py" type="text/plain"><tt>pyi_rth_pkgres.py</tt></a>
 <span class="moduletype">Script</span>  <div class="import">
 imports:
     <a href="#pkg_resources">pkg_resources</a>
@@ -279,17 +278,6 @@ imported by:
 </div>
 
 <div class="node">
-  <a name="'multiprocessing.forking'"></a>
-  <a target="code" href="" type="text/plain"><tt>'multiprocessing.forking'</tt></a>
-<span class="moduletype">MissingModule</span>  <div class="import">
-imported by:
-    <a href="#pyi_rth_multiprocessing.py">pyi_rth_multiprocessing.py</a>
-
-  </div>
-
-</div>
-
-<div class="node">
   <a name="'nose.plugins'"></a>
   <a target="code" href="" type="text/plain"><tt>'nose.plugins'</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
@@ -350,7 +338,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>'org.python'</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#copy">copy</a>
+    <a href="#pickle">pickle</a>
  &#8226;   <a href="#setuptools.sandbox">setuptools.sandbox</a>
  &#8226;   <a href="#xml.sax">xml.sax</a>
 
@@ -524,13 +512,7 @@ imported by:
   <a target="code" href="///C:/users/anura/appdata/local/programs/python/python38-32/lib/__future__.py" type="text/plain"><tt>__future__</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imported by:
-    <a href="#PyInstaller.building.build_main">PyInstaller.building.build_main</a>
- &#8226;   <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#PyInstaller.depend.analysis">PyInstaller.depend.analysis</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph.find_modules">PyInstaller.lib.modulegraph.find_modules</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph.util">PyInstaller.lib.modulegraph.util</a>
- &#8226;   <a href="#codeop">codeop</a>
+    <a href="#codeop">codeop</a>
  &#8226;   <a href="#doctest">doctest</a>
  &#8226;   <a href="#ordlookup">ordlookup</a>
  &#8226;   <a href="#pefile">pefile</a>
@@ -1736,7 +1718,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
+    <a href="#PyInstaller.depend.analysis">PyInstaller.depend.analysis</a>
+ &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#numpy.core._internal">numpy.core._internal</a>
  &#8226;   <a href="#numpy.lib.utils">numpy.lib.utils</a>
@@ -2717,8 +2700,7 @@ imported by:
   <a name="builtins"></a>
   <tt>builtins</tt> <span class="moduletype"><i>(builtin module)</i></span>  <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#builtins">builtins</a>
+    <a href="#builtins">builtins</a>
  &#8226;   <a href="#bz2">bz2</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#doctest">doctest</a>
@@ -3060,7 +3042,6 @@ imports:
  &#8226;   <a href="#collections.MutableMapping">collections.MutableMapping</a>
  &#8226;   <a href="#collections.MutableSet">collections.MutableSet</a>
  &#8226;   <a href="#collections.Sequence">collections.Sequence</a>
- &#8226;   <a href="#collections.Set">collections.Set</a>
  &#8226;   <a href="#copy">copy</a>
  &#8226;   <a href="#heapq">heapq</a>
  &#8226;   <a href="#itertools">itertools</a>
@@ -3073,7 +3054,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
+    <a href="#PyInstaller.depend.analysis">PyInstaller.depend.analysis</a>
  &#8226;   <a href="#PyInstaller.depend.bindepend">PyInstaller.depend.bindepend</a>
  &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
  &#8226;   <a href="#_pydecimal">_pydecimal</a>
@@ -3186,21 +3167,8 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>collections.Sequence</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#collections">collections</a>
+    <a href="#collections">collections</a>
  &#8226;   <a href="#setuptools._vendor.ordered_set">setuptools._vendor.ordered_set</a>
-
-  </div>
-
-</div>
-
-<div class="node">
-  <a name="collections.Set"></a>
-  <a target="code" href="" type="text/plain"><tt>collections.Set</tt></a>
-<span class="moduletype">MissingModule</span>  <div class="import">
-imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#collections">collections</a>
 
   </div>
 
@@ -3217,8 +3185,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#asyncio.base_events">asyncio.base_events</a>
+    <a href="#asyncio.base_events">asyncio.base_events</a>
  &#8226;   <a href="#asyncio.coroutines">asyncio.coroutines</a>
  &#8226;   <a href="#cgi">cgi</a>
  &#8226;   <a href="#configparser">configparser</a>
@@ -3450,8 +3417,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#_osx_support">_osx_support</a>
+    <a href="#_osx_support">_osx_support</a>
  &#8226;   <a href="#_threading_local">_threading_local</a>
  &#8226;   <a href="#asyncio.staggered">asyncio.staggered</a>
  &#8226;   <a href="#distutils.command.build_ext">distutils.command.build_ext</a>
@@ -3509,8 +3475,8 @@ imported by:
   <a target="code" href="///C:/users/anura/appdata/local/programs/python/python38-32/lib/copy.py" type="text/plain"><tt>copy</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#'org.python'">'org.python'</a>
- &#8226;   <a href="#copyreg">copyreg</a>
+    <a href="#copyreg">copyreg</a>
+ &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -3907,9 +3873,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.depend.utils">PyInstaller.depend.utils</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph._compat">PyInstaller.lib.modulegraph._compat</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
+    <a href="#PyInstaller.lib.modulegraph._compat">PyInstaller.lib.modulegraph._compat</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#pdb">pdb</a>
  &#8226;   <a href="#setuptools.py33compat">setuptools.py33compat</a>
@@ -5176,8 +5140,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.building.makespec">PyInstaller.building.makespec</a>
- &#8226;   <a href="#distutils.cygwinccompiler">distutils.cygwinccompiler</a>
+    <a href="#distutils.cygwinccompiler">distutils.cygwinccompiler</a>
  &#8226;   <a href="#distutils.versionpredicate">distutils.versionpredicate</a>
  &#8226;   <a href="#numpy.distutils.ccompiler">numpy.distutils.ccompiler</a>
  &#8226;   <a href="#numpy.distutils.mingw32ccompiler">numpy.distutils.mingw32ccompiler</a>
@@ -9178,11 +9141,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph.find_modules">PyInstaller.lib.modulegraph.find_modules</a>
+    <a href="#PyInstaller.lib.modulegraph.find_modules">PyInstaller.lib.modulegraph.find_modules</a>
  &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
  &#8226;   <a href="#PyInstaller.lib.modulegraph.util">PyInstaller.lib.modulegraph.util</a>
- &#8226;   <a href="#PyInstaller.loader.pyimod02_archive">PyInstaller.loader.pyimod02_archive</a>
  &#8226;   <a href="#pkg_resources">pkg_resources</a>
  &#8226;   <a href="#setuptools._vendor.packaging.tags">setuptools._vendor.packaging.tags</a>
  &#8226;   <a href="#setuptools.py27compat">setuptools.py27compat</a>
@@ -9210,8 +9171,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#imp">imp</a>
+    <a href="#imp">imp</a>
  &#8226;   <a href="#importlib">importlib</a>
  &#8226;   <a href="#importlib._bootstrap">importlib._bootstrap</a>
  &#8226;   <a href="#importlib._bootstrap_external">importlib._bootstrap_external</a>
@@ -9492,8 +9452,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#PyInstaller.compat">PyInstaller.compat</a>
- &#8226;   <a href="#PyInstaller.depend.utils">PyInstaller.depend.utils</a>
+    <a href="#PyInstaller.depend.utils">PyInstaller.depend.utils</a>
  &#8226;   <a href="#PyInstaller.lib.modulegraph._compat">PyInstaller.lib.modulegraph._compat</a>
  &#8226;   <a href="#PyInstaller.lib.modulegraph.zipio">PyInstaller.lib.modulegraph.zipio</a>
  &#8226;   <a href="#_compression">_compression</a>
@@ -16128,7 +16087,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>org</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#pickle">pickle</a>
+    <a href="#copy">copy</a>
 
   </div>
 
@@ -16422,7 +16381,8 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#importlib.metadata">importlib.metadata</a>
+    <a href="#PyInstaller.utils.hooks">PyInstaller.utils.hooks</a>
+ &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#numpy.compat.py3k">numpy.compat.py3k</a>
  &#8226;   <a href="#zipimport">zipimport</a>
 
@@ -16474,7 +16434,8 @@ imported by:
   <a target="code" href="///C:/users/anura/appdata/local/programs/python/python38-32/lib/pickle.py" type="text/plain"><tt>pickle</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#_compat_pickle">_compat_pickle</a>
+    <a href="#'org.python'">'org.python'</a>
+ &#8226;   <a href="#_compat_pickle">_compat_pickle</a>
  &#8226;   <a href="#_pickle">_pickle</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#codecs">codecs</a>
@@ -16483,7 +16444,6 @@ imports:
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#io">io</a>
  &#8226;   <a href="#itertools">itertools</a>
- &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#pprint">pprint</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#struct">struct</a>
@@ -16576,6 +16536,7 @@ imports:
  &#8226;   <a href="#pkg_resources.extern.appdirs">pkg_resources.extern.appdirs</a>
  &#8226;   <a href="#pkg_resources.extern.packaging">pkg_resources.extern.packaging</a>
  &#8226;   <a href="#pkg_resources.extern.six">pkg_resources.extern.six</a>
+ &#8226;   <a href="#pkg_resources.py2_warn">pkg_resources.py2_warn</a>
  &#8226;   <a href="#pkg_resources.py31compat">pkg_resources.py31compat</a>
  &#8226;   <a href="#pkgutil">pkgutil</a>
  &#8226;   <a href="#platform">platform</a>
@@ -16597,6 +16558,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#PyInstaller">PyInstaller</a>
+ &#8226;   <a href="#PyInstaller.building.build_main">PyInstaller.building.build_main</a>
  &#8226;   <a href="#PyInstaller.building.toc_conversion">PyInstaller.building.toc_conversion</a>
  &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
  &#8226;   <a href="#PyInstaller.utils.hooks">PyInstaller.utils.hooks</a>
@@ -16604,6 +16566,7 @@ imported by:
  &#8226;   <a href="#pkg_resources">pkg_resources</a>
  &#8226;   <a href="#pkg_resources._vendor">pkg_resources._vendor</a>
  &#8226;   <a href="#pkg_resources.extern">pkg_resources.extern</a>
+ &#8226;   <a href="#pkg_resources.py2_warn">pkg_resources.py2_warn</a>
  &#8226;   <a href="#pkg_resources.py31compat">pkg_resources.py31compat</a>
  &#8226;   <a href="#pyi_rth_pkgres.py">pyi_rth_pkgres.py</a>
  &#8226;   <a href="#setuptools.archive_util">setuptools.archive_util</a>
@@ -16994,6 +16957,25 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="pkg_resources.py2_warn"></a>
+  <a target="code" href="///C:/users/anura/appdata/local/programs/python/python38-32/lib/site-packages/pkg_resources/py2_warn.py" type="text/plain"><tt>pkg_resources.py2_warn</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#pkg_resources">pkg_resources</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#textwrap">textwrap</a>
+ &#8226;   <a href="#warnings">warnings</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#pkg_resources">pkg_resources</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="pkg_resources.py31compat"></a>
   <a target="code" href="///C:/users/anura/appdata/local/programs/python/python38-32/lib/site-packages/pkg_resources/py31compat.py" type="text/plain"><tt>pkg_resources.py31compat</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -17362,8 +17344,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>pyimod03_importers</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#PyInstaller.loader.pyimod02_archive">PyInstaller.loader.pyimod02_archive</a>
- &#8226;   <a href="#pyi_rth_pkgres.py">pyi_rth_pkgres.py</a>
+    <a href="#pyi_rth_pkgres.py">pyi_rth_pkgres.py</a>
 
   </div>
 
@@ -19404,7 +19385,7 @@ imported by:
  &#8226;   <a href="#PyInstaller.building.build_main">PyInstaller.building.build_main</a>
  &#8226;   <a href="#PyInstaller.building.osx">PyInstaller.building.osx</a>
  &#8226;   <a href="#PyInstaller.building.utils">PyInstaller.building.utils</a>
- &#8226;   <a href="#PyInstaller.compat">PyInstaller.compat</a>
+ &#8226;   <a href="#PyInstaller.utils.osx">PyInstaller.utils.osx</a>
  &#8226;   <a href="#argparse">argparse</a>
  &#8226;   <a href="#ctypes.util">ctypes.util</a>
  &#8226;   <a href="#distutils._msvccompiler">distutils._msvccompiler</a>
@@ -19774,7 +19755,6 @@ imported by:
     <a href="#PyInstaller.archive.writers">PyInstaller.archive.writers</a>
  &#8226;   <a href="#PyInstaller.building.utils">PyInstaller.building.utils</a>
  &#8226;   <a href="#PyInstaller.depend.utils">PyInstaller.depend.utils</a>
- &#8226;   <a href="#PyInstaller.lib.modulegraph.modulegraph">PyInstaller.lib.modulegraph.modulegraph</a>
  &#8226;   <a href="#PyInstaller.loader.pyimod02_archive">PyInstaller.loader.pyimod02_archive</a>
  &#8226;   <a href="#PyInstaller.utils.win32.icon">PyInstaller.utils.win32.icon</a>
  &#8226;   <a href="#PyInstaller.utils.win32.versioninfo">PyInstaller.utils.win32.versioninfo</a>
@@ -20065,6 +20045,7 @@ imported by:
  &#8226;   <a href="#pkg_resources._vendor.pyparsing">pkg_resources._vendor.pyparsing</a>
  &#8226;   <a href="#pkg_resources._vendor.six">pkg_resources._vendor.six</a>
  &#8226;   <a href="#pkg_resources.extern">pkg_resources.extern</a>
+ &#8226;   <a href="#pkg_resources.py2_warn">pkg_resources.py2_warn</a>
  &#8226;   <a href="#pkg_resources.py31compat">pkg_resources.py31compat</a>
  &#8226;   <a href="#pkgutil">pkgutil</a>
  &#8226;   <a href="#platform">platform</a>
@@ -20419,6 +20400,7 @@ imported by:
  &#8226;   <a href="#numpy.ma.core">numpy.ma.core</a>
  &#8226;   <a href="#optparse">optparse</a>
  &#8226;   <a href="#pkg_resources">pkg_resources</a>
+ &#8226;   <a href="#pkg_resources.py2_warn">pkg_resources.py2_warn</a>
  &#8226;   <a href="#pydoc">pydoc</a>
  &#8226;   <a href="#setuptools.command.bdist_egg">setuptools.command.bdist_egg</a>
  &#8226;   <a href="#setuptools.command.easy_install">setuptools.command.easy_install</a>
@@ -21412,6 +21394,7 @@ imported by:
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#pkg_resources">pkg_resources</a>
  &#8226;   <a href="#pkg_resources._vendor.pyparsing">pkg_resources._vendor.pyparsing</a>
+ &#8226;   <a href="#pkg_resources.py2_warn">pkg_resources.py2_warn</a>
  &#8226;   <a href="#pkgutil">pkgutil</a>
  &#8226;   <a href="#plistlib">plistlib</a>
  &#8226;   <a href="#pydoc">pydoc</a>
