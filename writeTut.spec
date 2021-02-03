@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['writeTut.py'],
-             pathex=['C:\\Users\\anura\\Desktop\\TEST\\AutoTut_SourceCode\\python_src'],
+             pathex=['C:\\Users\\Saurav\\Downloads\\AutoTut_SourceCode\\python_src'],
              binaries=[],
              datas=[],
              hiddenimports=[],
